@@ -1,2 +1,2 @@
-# origin
-A Gamefi protocol
+# GameLand
+A GameFi NFT rent protocol.
