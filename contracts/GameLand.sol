@@ -1,8 +1,9 @@
+//SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v4.0/contracts/token/ERC721/utils/ERC721Holder.sol";
+import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 
-contract Origin is ERC721Holder{
+contract GameLand is ERC721Holder{
    
     address public testnft;
     
