@@ -5,11 +5,9 @@ import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 
 contract GameLand is ERC721Holder {
     address public testnft;
-    address public gameland;
 
     constructor(address _nftaddress) {
         testnft = _nftaddress;
-        gameland = msg.sender;
     }
 
     struct Nft {
@@ -111,16 +109,11 @@ contract GameLand is ERC721Holder {
         require(success);
         uint256 price = nft_basic_status[nft_id].price_per_day *
             nft_basic_status[nft_id].duration;
-        //this line may be wrong because 3%
+
         (bool rent_success, ) = nft_owner[nft_id].call{
             value: price - (price * 3) / 100
         }("");
         require(rent_success);
-
-        (bool fee_success, ) = gameland[nft_id].call{value: (price * 3) / 100}(
-            ""
-        );
-        require(fee_success);
 
         uint256 duration = nft_basic_status[nft_id].duration;
         borrow_or_not[nft_id] = true;
@@ -195,18 +188,16 @@ contract GameLand is ERC721Holder {
         );
     }
 
-    //Get the repay_time, added by ting
-    function get_borrow_info(address borrower) public view returns (uint256) {
-        return borrow_status[borrower];
-    }
-
-    //Get the nft owner, added by ting
-    function get_borrow_info(uint256 id) public view returns (address) {
-        return nft_owner[id];
+    //Get the borrower, repay_time, added by ting
+    function get_borrow_info(uint256 nft_id) public view returns (address, uint256) {
+        return (
+            borrow_status[nft_id].borrower,
+            borrow_status[nft_id].repay_time
+        );
     }
 
     //Check a NFT is borrowed or not, added by ting
-    function check_the_borrow_status(uint256 id) public view returns (bool) {
-        return borrow_or_not[id];
+    function check_the_borrow_status(uint256 nft_id) public view returns (bool) {
+        return borrow_or_not[nft_id];
     }
 }
