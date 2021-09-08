@@ -18,9 +18,9 @@ The nature of NFT chain-crossing is different from the token one. Therefore, Gam
 
 
 ## Technology Stack
- *  Client Framework - React + Typescript 
- *  Ethereum development environment - Solidity + Hardhat
- *  Ethereum Web Client Library - Web3.js&Truffle/Ether.js&Waffle
+* Client Framework - React + Typescript 
+* Ethereum development environment - Solidity + Hardhat
+* Ethereum Web Client Library - Web3.js&Truffle/Ether.js&Waffle
 
 ## User Case(Ether only )
 - Lenders(Lending an NFT)
@@ -40,10 +40,10 @@ The nature of NFT chain-crossing is different from the token one. Therefore, Gam
 * In the case that the NFT is not returned on time (rental duration has passed), the collateral can be claimed by the lender from the Gameland contract
 
 ## The process works as follow:
- *  Lenders fill up the name, nature of the item and upload the image of it.
- *  Gameland will then use the information above as a file and send it to IPFS to generate a CID
- *  The CID and the lender address will be the parameters to call our ERC721 contract to mint a NFT
- *  To call the functions at Gameland on UI, the NFT ID will be used to fetch the corresponding CID and the showcase will be rendered
+* Lenders fill up the name, nature of the item and upload the image of it.
+* Gameland will then use the information above as a file and send it to IPFS to generate a CID
+* The CID and the lender address will be the parameters to call our ERC721 contract to mint a NFT
+* To call the functions at Gameland on UI, the NFT ID will be used to fetch the corresponding CID and the showcase will be rendered
 
 ## Road map 
 Q3 2021
