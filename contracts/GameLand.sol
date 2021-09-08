@@ -205,9 +205,4 @@ contract GameLand is ERC721Holder {
     function query_the_nft_owner(uint256 nft_id) public view returns (address) {
         return nft_owner[nft_id];
     }
-
-    //Query the NFT the user owner, added by ting
-    function query_the_belonging_nft(address owner) public view returns (uint256) {
-        return nft_owner[owner];
-    }
 }
