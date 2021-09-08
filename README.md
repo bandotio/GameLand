@@ -48,6 +48,8 @@ The nature of NFT chain-crossing is different from the token one. Therefore, Gam
 ## Road map 
 Q3 2021
 *  Testnet launch : including lending, borrowing, withdraw and liquidation etc.
+
+
 Q4 2021
 *  Bugs fixing and function optimizations: imposing a fine as penalty instead of confiscating the collaterals
 *  Collateral Free Rentals: direct project integrations with NFT games/projects enabling collateral free renting
