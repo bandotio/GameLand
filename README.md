@@ -11,7 +11,7 @@ This multi-dimensional enriches the blockchain game itself and brings new upgrad
 ## Our Vision 
 The Gameland vision is to bring affordable game experience with an NFT for trustless, secure, and quick rentability in cross-platform way by gathering all the rentable items like user accounts or tools from different online gaming platforms and list them in order for people who are interested in renting one or some of them for either fun game experience or profit. 
 Moreover, we want the community to benefit from this. We aim to fulfill the vision of a true DAO where each member is rewarded, to the extent that they are active participants in the community. All of the Origin products will be under the umbrella of this DAO.
-The initial and core Origin product is a protocol layer that enables peer to peer renting of ERC-721 and ERC-1155 non-fungible tokens (NFTs) on Ethereum Mainnet
+The initial and core Origin product is a protocol layer that enables peer to peer renting of ERC-721 non-fungible tokens (NFTs) on Ethereum Mainnet
 
 Gameland architecture in future will be multi-chained as most of the different chain games are on different public chains.
 The nature of NFT chain-crossing is different from the token one. Therefore, Gameland plan to establish multiple Chain Wallet smart contract leasing protocols on the platform to implement the cross chain NFT leasing system.
