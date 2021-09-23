@@ -3,6 +3,9 @@ A GameFi NFT rent protocol.
 
 Leveraging the blockchain game service market with experiential innovation
 
+## Presentation
+https://v.youku.com/v_show/id_XNTgwNjg2NzA5Ng==.html
+
 ## High-Level Concept (Abstract)
 Gameland as a Gamefi platform aims to help users experience high-end games at the lowest price, provide users a rental platform with integrating experience and revenue, and lower the boundary between players and games。
 This multi-dimensional enriches the blockchain game itself and brings new upgrades to the blockchain game
