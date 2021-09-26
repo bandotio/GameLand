@@ -93,6 +93,7 @@ contract GameLand is ERC721Holder {
 
     // borrower rent,this function will transfer rent to owner
     function rent(uint256 nft_id) public payable {
+        //potential attack, example totalprice is 2 should means 2 ether,but there is no ether unit, if msg.value is 2 wei it can also get pass
         require(
             nft_basic_status[nft_id].totalprice <= msg.value,
             "Not enough money"
@@ -109,9 +110,10 @@ contract GameLand is ERC721Holder {
         require(success);
         uint256 price = nft_basic_status[nft_id].price_per_day *
             nft_basic_status[nft_id].duration;
-
+        //to represent 0.03,already equal because the next line /1000
+        uint pay_to_owner = price * 1000 - (price * 1000 * 3) / 100;
         (bool rent_success, ) = nft_owner[nft_id].call{
-            value: price - (price * 3) / 100
+            value: pay_to_owner * 1000_000_000_000_000
         }("");
         require(rent_success);
 
@@ -139,7 +141,7 @@ contract GameLand is ERC721Holder {
         require(success);
 
         (bool collatoral_success, ) = borrow_status[nft_id].borrower.call{
-            value: nft_basic_status[nft_id].collatoral
+            value: nft_basic_status[nft_id].collatoral * 1000_000_000_000_000_000
         }("");
         require(collatoral_success);
 
@@ -155,7 +157,7 @@ contract GameLand is ERC721Holder {
         require(msg.sender == nft_owner[nft_id], "Only owner can liquidation");
         require(borrow_status[nft_id].repay_time <= block.timestamp, "Not yet");
         (bool success, ) = nft_owner[nft_id].call{
-            value: nft_basic_status[nft_id].collatoral
+            value: nft_basic_status[nft_id].collatoral * 1000_000_000_000_000_000
         }("");
         require(success);
         nft_owner[nft_id] = borrow_status[nft_id].borrower;
