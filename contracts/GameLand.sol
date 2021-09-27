@@ -95,7 +95,7 @@ contract GameLand is ERC721Holder {
     function rent(uint256 nft_id) public payable {
         //potential attack, example totalprice is 2 should means 2 ether,but there is no ether unit, if msg.value is 2 wei it can also get pass
         require(
-            nft_basic_status[nft_id].totalprice <= msg.value,
+            nft_basic_status[nft_id].totalprice * 1000_000_000_000_000_000 <= msg.value,
             "Not enough money"
         );
         require(!borrow_or_not[nft_id], "Already been borrowed out");
@@ -110,9 +110,10 @@ contract GameLand is ERC721Holder {
         require(success);
         uint256 price = nft_basic_status[nft_id].price_per_day *
             nft_basic_status[nft_id].duration;
-        //to represent 0.03,already equal because the next line /1000
+        //to represent 0.03. no need to dive, because the next line /10e3
         uint pay_to_owner = price * 1000 - (price * 1000 * 3) / 100;
         (bool rent_success, ) = nft_owner[nft_id].call{
+            //this is 10e15, because above line use 10e3
             value: pay_to_owner * 1000_000_000_000_000
         }("");
         require(rent_success);
@@ -163,8 +164,7 @@ contract GameLand is ERC721Holder {
         nft_owner[nft_id] = borrow_status[nft_id].borrower;
         delete borrow_status[nft_id];
         delete borrow_or_not[nft_id];
-        emit Liquidation(msg.sender, nft_id);
-    }
+        emit Liquidation(msg.sender, nft_id);}
 
     //added by ting
     function get_testnft() public view returns (address) {
