@@ -66,8 +66,8 @@ describe("Gameland", function () {
       await hardhatNft.approve(hardhatGameland.address,1);
       expect(await hardhatNft.getApproved(1)).to.equal(hardhatGameland.address);
       //let owner_cur_balance = await provider.getBalance(owner.address);
-
-      await hardhatGameland.deposit(1,1,1,1);
+      //@para  uint256 pricePerDay,uint256 duration,uint256 nft_id,uint256 collatoral
+      await hardhatGameland.deposit(ethers.utils.parseEther("1"),1,1,ethers.utils.parseEther("1"));
       expect(await hardhatGameland.nft_owner(1)).to.equal(owner.address); 
       expect(await hardhatNft.ownerOf(1)).to.equal(hardhatGameland.address);
       let old_balance = await provider.getBalance(hardhatGameland.address);
@@ -90,7 +90,7 @@ describe("Gameland", function () {
     it("Liqudation ready", async function () {
       await hardhatNft.mint(owner.address,2);
       await hardhatNft.approve(hardhatGameland.address,2);
-      await hardhatGameland.deposit(1,1,2,1);
+      await hardhatGameland.deposit(ethers.utils.parseEther("1"),1,2,ethers.utils.parseEther("1"));
       await hardhatGameland.connect(borrower).rent(2, {value: ethers.utils.parseEther("2")});
     });
 

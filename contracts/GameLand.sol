@@ -11,6 +11,7 @@ contract GameLand is ERC721Holder {
     }
 
     struct Nft {
+        //price represent in ether
         uint256 price_per_day;
         uint256 duration;
         uint256 collatoral;
@@ -93,9 +94,9 @@ contract GameLand is ERC721Holder {
 
     // borrower rent,this function will transfer rent to owner
     function rent(uint256 nft_id) public payable {
-        //potential attack, example totalprice is 2 should means 2 ether,but there is no ether unit, if msg.value is 2 wei it can also get pass
+        
         require(
-            nft_basic_status[nft_id].totalprice * 1000_000_000_000_000_000 <= msg.value,
+            nft_basic_status[nft_id].totalprice <= msg.value,
             "Not enough money"
         );
         require(!borrow_or_not[nft_id], "Already been borrowed out");
@@ -110,11 +111,11 @@ contract GameLand is ERC721Holder {
         require(success);
         uint256 price = nft_basic_status[nft_id].price_per_day *
             nft_basic_status[nft_id].duration;
-        //to represent 0.03. no need to dive, because the next line /10e3
-        uint pay_to_owner = price * 1000 - (price * 1000 * 3) / 100;
+        
+        uint pay_to_owner = price  - (price  * 3) / 100;
         (bool rent_success, ) = nft_owner[nft_id].call{
-            //this is 10e15, because above line use 10e3
-            value: pay_to_owner * 1000_000_000_000_000
+            
+            value: pay_to_owner 
         }("");
         require(rent_success);
 
@@ -142,7 +143,7 @@ contract GameLand is ERC721Holder {
         require(success);
 
         (bool collatoral_success, ) = borrow_status[nft_id].borrower.call{
-            value: nft_basic_status[nft_id].collatoral * 1000_000_000_000_000_000
+            value: nft_basic_status[nft_id].collatoral 
         }("");
         require(collatoral_success);
 
@@ -158,7 +159,7 @@ contract GameLand is ERC721Holder {
         require(msg.sender == nft_owner[nft_id], "Only owner can liquidation");
         require(borrow_status[nft_id].repay_time <= block.timestamp, "Not yet");
         (bool success, ) = nft_owner[nft_id].call{
-            value: nft_basic_status[nft_id].collatoral * 1000_000_000_000_000_000
+            value: nft_basic_status[nft_id].collatoral 
         }("");
         require(success);
         nft_owner[nft_id] = borrow_status[nft_id].borrower;
