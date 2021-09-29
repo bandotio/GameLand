@@ -121,9 +121,10 @@ contract GameLand is ERC721Holder {
 
         uint256 duration = nft_basic_status[nft_id].duration;
         borrow_or_not[nft_id] = true;
+        //fix duration time
         borrow_status[nft_id] = borrowInfo(
             msg.sender,
-            duration + block.timestamp
+            duration * 1 days + block.timestamp
         );
         emit Rented(address(this), msg.sender, nft_id);
     }
