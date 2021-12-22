@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 
-contract GameLand is ERC721Holder,ERC1155Holder {
+contract GameLand is ERC721Holder, ERC1155Holder {
     //all nft programes
     address[] public nfts;
     address public owner;
@@ -81,33 +81,34 @@ contract GameLand is ERC721Holder,ERC1155Holder {
         uint256 nft_id,
         uint256 collatoral,
         address nft_programe_address,
-        // front calculate，gameland_nft_id = uint(string(programe_index)+string(nft_id)),program_index=programe_number[nft_programe_address]
+        // front-end calculation，gameland_nft_id = uint(string(programe_index)+string(nft_id)),program_index=programe_number[nft_programe_address]
         uint256 gameland_nft_id
     ) public {
         //this function will check everything about nft
         bool success;
-        if (is721(nft_programe_address)){
-            (success,) = nft_programe_address.call(
-            abi.encodeWithSignature(
-                "safeTransferFrom(address,address,uint256)",
-                msg.sender,
-                address(this),
-                nft_id
-            )
-        );}
-        if (is1155(nft_programe_address)){
+        if (is721(nft_programe_address)) {
+            (success, ) = nft_programe_address.call(
+                abi.encodeWithSignature(
+                    "safeTransferFrom(address,address,uint256)",
+                    msg.sender,
+                    address(this),
+                    nft_id
+                )
+            );
+        }
+        if (is1155(nft_programe_address)) {
             bytes memory empty = "";
             (success, ) = nft_programe_address.call(
-            abi.encodeWithSignature(
-                "safeTransferFrom(address,address,uint256,uint256,bytes)",
-                msg.sender,
-                address(this),
-                nft_id,
-                1,
-                empty
-            )
-        );
-        } 
+                abi.encodeWithSignature(
+                    "safeTransferFrom(address,address,uint256,uint256,bytes)",
+                    msg.sender,
+                    address(this),
+                    nft_id,
+                    1,
+                    empty
+                )
+            );
+        }
         require(success);
         uint256 total_amount = daily_price * duration + collatoral;
         nft_basic_status[gameland_nft_id] = Nft(
@@ -133,28 +134,29 @@ contract GameLand is ERC721Holder,ERC1155Holder {
             "Only owner can withdraw NFT"
         );
         bool success;
-        if (is721(nft_programe_address)){
-            (success,) = nft_programe_address.call(
-            abi.encodeWithSignature(
-                "safeTransferFrom(address,address,uint256)",
-                address(this),
-                msg.sender,
-                nft_id
-            )
-        );}
-        if (is1155(nft_programe_address)){
+        if (is721(nft_programe_address)) {
+            (success, ) = nft_programe_address.call(
+                abi.encodeWithSignature(
+                    "safeTransferFrom(address,address,uint256)",
+                    address(this),
+                    msg.sender,
+                    nft_id
+                )
+            );
+        }
+        if (is1155(nft_programe_address)) {
             bytes memory empty = "";
             (success, ) = nft_programe_address.call(
-            abi.encodeWithSignature(
-                "safeTransferFrom(address,address,uint256,uint256,bytes)",
-                address(this),
-                msg.sender,
-                nft_id,
-                1,
-                empty
-            )
-        );
-        } 
+                abi.encodeWithSignature(
+                    "safeTransferFrom(address,address,uint256,uint256,bytes)",
+                    address(this),
+                    msg.sender,
+                    nft_id,
+                    1,
+                    empty
+                )
+            );
+        }
         require(success);
         delete nft_basic_status[gameland_nft_id];
         delete nft_owner[gameland_nft_id];
@@ -174,28 +176,29 @@ contract GameLand is ERC721Holder,ERC1155Holder {
         );
         require(!borrow_or_not[gameland_nft_id], "Already been borrowed");
         bool success;
-        if (is721(nft_programe_address)){
-            (success,) = nft_programe_address.call(
-            abi.encodeWithSignature(
-                "safeTransferFrom(address,address,uint256)",
-                address(this),
-                msg.sender,
-                nft_id
-            )
-        );}
-        if (is1155(nft_programe_address)){
+        if (is721(nft_programe_address)) {
+            (success, ) = nft_programe_address.call(
+                abi.encodeWithSignature(
+                    "safeTransferFrom(address,address,uint256)",
+                    address(this),
+                    msg.sender,
+                    nft_id
+                )
+            );
+        }
+        if (is1155(nft_programe_address)) {
             bytes memory empty = "";
             (success, ) = nft_programe_address.call(
-            abi.encodeWithSignature(
-                "safeTransferFrom(address,address,uint256,uint256,bytes)",
-                address(this),
-                msg.sender,
-                nft_id,
-                1,
-                empty
-            )
-        );
-        } 
+                abi.encodeWithSignature(
+                    "safeTransferFrom(address,address,uint256,uint256,bytes)",
+                    address(this),
+                    msg.sender,
+                    nft_id,
+                    1,
+                    empty
+                )
+            );
+        }
         require(success);
         uint256 price = nft_basic_status[gameland_nft_id].daily_price *
             nft_basic_status[gameland_nft_id].duration;
@@ -228,29 +231,30 @@ contract GameLand is ERC721Holder,ERC1155Holder {
             borrow_or_not[gameland_nft_id],
             "the nft has not been borrowed"
         );
-        if (is721(nft_programe_address)){
-            (success,) = nft_programe_address.call(
-            abi.encodeWithSignature(
-                "safeTransferFrom(address,address,uint256)",
-                msg.sender,
-                address(this),
-                nft_id
-            )
-        );}
-        if (is1155(nft_programe_address)){
+        if (is721(nft_programe_address)) {
+            (success, ) = nft_programe_address.call(
+                abi.encodeWithSignature(
+                    "safeTransferFrom(address,address,uint256)",
+                    msg.sender,
+                    address(this),
+                    nft_id
+                )
+            );
+        }
+        if (is1155(nft_programe_address)) {
             bytes memory empty = "";
             (success, ) = nft_programe_address.call(
-            abi.encodeWithSignature(
-                "safeTransferFrom(address,address,uint256,uint256,bytes)",
-                msg.sender,
-                address(this),
-                nft_id,
-                1,
-                empty
-            )
-        );
-        } 
-        require(success,"return failed");
+                abi.encodeWithSignature(
+                    "safeTransferFrom(address,address,uint256,uint256,bytes)",
+                    msg.sender,
+                    address(this),
+                    nft_id,
+                    1,
+                    empty
+                )
+            );
+        }
+        require(success, "return failed");
 
         (bool collatoral_success, ) = borrow_status[gameland_nft_id]
             .borrower
