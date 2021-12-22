@@ -29,7 +29,7 @@ If you are a lender, you can use our contract to mint 721 or 1155 nfts. then len
     
 - Approve To Gameland
 
-You should approve to Gameland contract to finish lend or repay nft. If some thing go wrong. Make sure you have approved Gameland to access your NFT.
+You should approve to Gameland contract to finish the lending or the repaying. If some thing go wrong. Make sure you have approved Gameland to access your NFT.
  
  *ERC721
  
