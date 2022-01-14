@@ -72,6 +72,28 @@ contract GameLand is ERC721Holder, ERC1155Holder {
         return IERC165(_nft).supportsInterface(type(IERC1155).interfaceId);
     }
 
+    function build_call(address nft_programe_address, address sender, address receiver, uint256 nft_id) public view  returns( bytes memory callload){
+        if (is721(nft_programe_address)) {
+                        callload= abi.encodeWithSignature(
+                            "safeTransferFrom(address,address,uint256)",
+                            sender,
+                            receiver,
+                            nft_id
+                        );
+                }
+        if (is1155(nft_programe_address)) {
+                bytes memory empty = "";
+                callload= abi.encodeWithSignature(
+                            "safeTransferFrom(address,address,uint256,uint256,bytes)",
+                            sender,
+                            receiver,
+                            nft_id,
+                            1,
+                            empty
+                        );
+                }
+    }
+
     //NFT owner transfer the ownership to Gameland, set price, duration, collatoral in eth
     //need approval
     function deposit(
@@ -86,29 +108,10 @@ contract GameLand is ERC721Holder, ERC1155Holder {
     ) public {
         //this function will check everything about nft
         bool success;
-        if (is721(nft_programe_address)) {
-            (success, ) = nft_programe_address.call(
-                abi.encodeWithSignature(
-                    "safeTransferFrom(address,address,uint256)",
-                    msg.sender,
-                    address(this),
-                    nft_id
-                )
+        bytes memory calls = build_call(nft_programe_address,msg.sender,address(this),nft_id);
+        (success, ) = nft_programe_address.call(
+                calls
             );
-        }
-        if (is1155(nft_programe_address)) {
-            bytes memory empty = "";
-            (success, ) = nft_programe_address.call(
-                abi.encodeWithSignature(
-                    "safeTransferFrom(address,address,uint256,uint256,bytes)",
-                    msg.sender,
-                    address(this),
-                    nft_id,
-                    1,
-                    empty
-                )
-            );
-        }
         require(success);
         uint256 total_amount = daily_price * duration + collatoral;
         nft_basic_status[gameland_nft_id] = Nft(
@@ -134,29 +137,10 @@ contract GameLand is ERC721Holder, ERC1155Holder {
             "Only owner can withdraw NFT"
         );
         bool success;
-        if (is721(nft_programe_address)) {
-            (success, ) = nft_programe_address.call(
-                abi.encodeWithSignature(
-                    "safeTransferFrom(address,address,uint256)",
-                    address(this),
-                    msg.sender,
-                    nft_id
-                )
-            );
-        }
-        if (is1155(nft_programe_address)) {
-            bytes memory empty = "";
-            (success, ) = nft_programe_address.call(
-                abi.encodeWithSignature(
-                    "safeTransferFrom(address,address,uint256,uint256,bytes)",
-                    address(this),
-                    msg.sender,
-                    nft_id,
-                    1,
-                    empty
-                )
-            );
-        }
+        bytes memory calls = build_call(nft_programe_address,address(this),msg.sender,nft_id);
+        (success, ) = nft_programe_address.call(
+                calls
+        );
         require(success);
         delete nft_basic_status[gameland_nft_id];
         delete nft_owner[gameland_nft_id];
@@ -176,29 +160,10 @@ contract GameLand is ERC721Holder, ERC1155Holder {
         );
         require(!borrow_or_not[gameland_nft_id], "Already been borrowed");
         bool success;
-        if (is721(nft_programe_address)) {
-            (success, ) = nft_programe_address.call(
-                abi.encodeWithSignature(
-                    "safeTransferFrom(address,address,uint256)",
-                    address(this),
-                    msg.sender,
-                    nft_id
-                )
-            );
-        }
-        if (is1155(nft_programe_address)) {
-            bytes memory empty = "";
-            (success, ) = nft_programe_address.call(
-                abi.encodeWithSignature(
-                    "safeTransferFrom(address,address,uint256,uint256,bytes)",
-                    address(this),
-                    msg.sender,
-                    nft_id,
-                    1,
-                    empty
-                )
-            );
-        }
+        bytes memory calls = build_call(nft_programe_address,address(this),msg.sender,nft_id);
+        (success, ) = nft_programe_address.call(
+                calls
+        );
         require(success);
         uint256 price = nft_basic_status[gameland_nft_id].daily_price *
             nft_basic_status[gameland_nft_id].duration;
@@ -231,29 +196,10 @@ contract GameLand is ERC721Holder, ERC1155Holder {
             borrow_or_not[gameland_nft_id],
             "the nft has not been borrowed"
         );
-        if (is721(nft_programe_address)) {
-            (success, ) = nft_programe_address.call(
-                abi.encodeWithSignature(
-                    "safeTransferFrom(address,address,uint256)",
-                    msg.sender,
-                    address(this),
-                    nft_id
-                )
-            );
-        }
-        if (is1155(nft_programe_address)) {
-            bytes memory empty = "";
-            (success, ) = nft_programe_address.call(
-                abi.encodeWithSignature(
-                    "safeTransferFrom(address,address,uint256,uint256,bytes)",
-                    msg.sender,
-                    address(this),
-                    nft_id,
-                    1,
-                    empty
-                )
-            );
-        }
+       bytes memory calls = build_call(nft_programe_address,msg.sender,address(this),nft_id);
+        (success, ) = nft_programe_address.call(
+                calls
+        );
         require(success, "return failed");
 
         (bool collatoral_success, ) = borrow_status[gameland_nft_id]
@@ -291,57 +237,4 @@ contract GameLand is ERC721Holder, ERC1155Holder {
         emit Confiscated(msg.sender, gameland_nft_id);
     }
 
-    //added by ting
-    function get_all_nfts() public view returns (address[] memory) {
-        return nfts;
-    }
-
-    //added by ting
-    function get_nft_allinfo(uint256 gameland_nft_id)
-        public
-        view
-        returns (
-            uint256,
-            uint256,
-            uint256,
-            uint256
-        )
-    {
-        return (
-            nft_basic_status[gameland_nft_id].daily_price,
-            nft_basic_status[gameland_nft_id].duration,
-            nft_basic_status[gameland_nft_id].collatoral,
-            nft_basic_status[gameland_nft_id].total_amount
-        );
-    }
-
-    //Get the borrower, due_date, added by ting
-    function get_borrow_info(uint256 gameland_nft_id)
-        public
-        view
-        returns (address, uint256)
-    {
-        return (
-            borrow_status[gameland_nft_id].borrower,
-            borrow_status[gameland_nft_id].due_date
-        );
-    }
-
-    //Check a NFT is borrowed or not, added by ting
-    function check_the_borrow_status(uint256 gameland_nft_id)
-        public
-        view
-        returns (bool)
-    {
-        return borrow_or_not[gameland_nft_id];
-    }
-
-    //Query the owner of a NFT, added by ting
-    function query_the_nft_owner(uint256 gameland_nft_id)
-        public
-        view
-        returns (address)
-    {
-        return nft_owner[gameland_nft_id];
-    }
 }
