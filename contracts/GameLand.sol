@@ -8,11 +8,13 @@ import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 
 contract GameLand is ERC721Holder, ERC1155Holder {
     //all nft programes
-    address[] public nfts;
+    address[] public nftprogrames;
     address public owner;
+    address public rev;
 
-    constructor() {
+    constructor(address _rev) {
         owner = msg.sender;
+        rev = _rev;
     }
 
     struct Nft {
@@ -56,9 +58,13 @@ contract GameLand is ERC721Holder, ERC1155Holder {
         _;
     }
 
+    function collatoralbalance() public view returns (uint256){
+        return address(this).balance;
+    }
+
     function add_nft_program(address nft_programe_address) public onlyOwner {
-        nfts.push(nft_programe_address);
-        uint256 how_many_nft_programes_has_in_gameland = nfts.length;
+        nftprogrames.push(nft_programe_address);
+        uint256 how_many_nft_programes_has_in_gameland = nftprogrames.length;
         programe_number[nft_programe_address] =
             how_many_nft_programes_has_in_gameland -
             1;
@@ -167,8 +173,12 @@ contract GameLand is ERC721Holder, ERC1155Holder {
         require(success);
         uint256 price = nft_basic_status[gameland_nft_id].daily_price *
             nft_basic_status[gameland_nft_id].duration;
-
-        uint256 pay_to_owner = price - (price * 3) / 100;
+        uint256 fee = (price * 3) / 100;
+        uint256 pay_to_owner = price - fee;
+        (bool pay_fee_success, ) = rev.call{
+            value: fee
+        }("");
+        require(pay_fee_success);
         (bool rent_success, ) = nft_owner[gameland_nft_id].call{
             value: pay_to_owner
         }("");
