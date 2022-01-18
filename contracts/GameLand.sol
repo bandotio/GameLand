@@ -45,7 +45,13 @@ contract GameLand is ERC721Holder, ERC1155Holder {
     //nft_programe address to their position
     mapping(address => uint256) public programe_number;
 
-    event Received(address from, address to, uint256 gameland_nft_id);
+    event Received(
+        address from,
+        address to,
+        uint256 gameland_nft_id,
+        uint256 nft_id,
+        address nft_programe_address
+    );
 
     event Withdrew(address from, address to, uint256 gameland_nft_id);
 
@@ -128,7 +134,13 @@ contract GameLand is ERC721Holder, ERC1155Holder {
         );
         nft_owner[gameland_nft_id] = msg.sender;
         borrow_or_not[gameland_nft_id] = false;
-        emit Received(msg.sender, address(this), gameland_nft_id);
+        emit Received(
+            msg.sender, 
+            address(this), 
+            gameland_nft_id,
+            nft_id,
+            nft_programe_address
+        );
     }
 
     //owner withdraw the nft when it is not borrowed
@@ -220,7 +232,13 @@ contract GameLand is ERC721Holder, ERC1155Holder {
         delete borrow_status[gameland_nft_id];
         delete borrow_or_not[gameland_nft_id];
 
-        emit Received(msg.sender, address(this), gameland_nft_id);
+        emit Received(
+            msg.sender, 
+            address(this), 
+            gameland_nft_id,
+            nft_id,
+            nft_programe_address
+        );
     }
 
     //owner take the collatoral when the borrower failed to return the nft
