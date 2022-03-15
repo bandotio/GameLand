@@ -87,7 +87,8 @@ contract GameLand is ERC721Holder, ERC1155Holder {
         address to,
         uint256 gameland_nft_id,
         uint256 nft_id,
-        address nft_programe_address
+        address nft_programe_address,
+        uint256 lending_id
     );
 
     modifier onlyOwner() {
@@ -275,7 +276,8 @@ contract GameLand is ERC721Holder, ERC1155Holder {
     function returnnft(
         uint256 nft_id,
         address nft_programe_address,
-        uint256 gameland_nft_id
+        uint256 gameland_nft_id,
+        uint256 lending_id
     ) public {
         bool success;
         require(
@@ -299,12 +301,15 @@ contract GameLand is ERC721Holder, ERC1155Holder {
         delete borrow_status[gameland_nft_id];
         delete borrow_or_not[gameland_nft_id];
 
+        uint256 lendingId = lending_id;
+        
         emit Returned(
             msg.sender,
             address(this),
             gameland_nft_id,
             nft_id,
-            nft_programe_address
+            nft_programe_address,
+            lendingId
         );
     }
 
